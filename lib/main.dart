@@ -10,11 +10,15 @@ void main() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(900, 300),
+    size: Size(850, 300),
     backgroundColor: Colors.transparent,
     skipTaskbar: true,
     titleBarStyle: TitleBarStyle.hidden,
     alwaysOnTop: true,
+    maximumSize: Size(850, 300),
+    minimumSize: Size(850, 300),
+    windowButtonVisibility: false,
+    fullScreen: false,
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -58,7 +62,10 @@ class _DesktopWidgetState extends State<MyApp> with WindowListener {
             // Make widget draggable
             windowManager.startDragging();
           },
-          child: FlipClock(),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(child: FlipClock()),
+          ),
         ),
       ),
     );
@@ -314,7 +321,7 @@ class FlipCard extends StatelessWidget {
               width: 60,
               alignment: Alignment.center,
               transform: Matrix4.identity()
-                ..translate(0.0, isTop ? height / 2 : -(height / 2)),
+                ..translate(0.0, (isTop ? height / 2 : -(height / 2))-5),
               child: Text(
                 digit,
                 style: TextStyle(
