@@ -4,8 +4,7 @@ A Flutter app with a vintage flip clock on the main screen.
 
 ## Features
 
-- Vintage flip clock display using a flip clock package
-- Simple counter example (default Flutter demo)
+- Vintage flip clock display for desktop
 
 ## Getting Started
 
