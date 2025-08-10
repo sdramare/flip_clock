@@ -1,16 +1,36 @@
-# flip_clock
+# Flip Clock
 
-A new Flutter project.
+A Flutter app with a vintage flip clock on the main screen.
+
+## Features
+
+- Vintage flip clock display using a flip clock package
+- Simple counter example (default Flutter demo)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. **Install dependencies:**
+   ```sh
+   flutter pub get
+   ```
+2. **Run the app:**
+   ```sh
+   flutter run
+   ```
 
-A few resources to get you started if this is your first Flutter project:
+## Dependencies
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [flip_panel_plus](https://pub.dev/packages/flip_panel_plus) (recommended for flip clock)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How it works
+
+- The main screen displays a flip clock and a counter.
+- The flip clock updates every second.
+
+## Screenshots
+
+<!-- Add screenshots here if available -->
+
+---
+
+This project was bootstrapped from the default Flutter template and enhanced with a vintage flip clock.
