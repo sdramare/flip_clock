@@ -18,10 +18,6 @@ A Flutter app with a vintage flip clock on the main screen.
    flutter run
    ```
 
-## Dependencies
-
-- [flip_panel_plus](https://pub.dev/packages/flip_panel_plus) (recommended for flip clock)
-
 ## How it works
 
 - The main screen displays a flip clock and a counter.
