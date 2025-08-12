@@ -177,18 +177,17 @@ class _FlipDigitState extends State<FlipDigit>
   late Animation<double> _flipAnimation;
   String? _previousDigit;
   String? _nextDigit;
-  bool _isFlipping = false;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 700),
       vsync: this,
     );
 
     _flipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInCubic),
+      CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
 
     _previousDigit = widget.digit;
@@ -198,9 +197,7 @@ class _FlipDigitState extends State<FlipDigit>
       if (status == AnimationStatus.completed) {
         setState(() {
           _previousDigit = _nextDigit;
-          _isFlipping = false;
         });
-        _animationController.reset();
       }
     });
   }
@@ -216,70 +213,59 @@ class _FlipDigitState extends State<FlipDigit>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.digit != widget.digit) {
       setState(() {
+        _previousDigit = _nextDigit;
         _nextDigit = widget.digit;
-        _isFlipping = true;
       });
+      _animationController.reset();
       _animationController.forward();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    const height = 160.0;
     return SizedBox(
       width: 120,
-      height: 160,
+      height: height,
       child: Stack(
         children: [
-          // Background card
-          FlipCard(digit: _previousDigit!, isTop: true),
-          FlipCard(digit: _previousDigit!, isTop: false),
+          if (_animationController.isAnimating) ...[
+            FlipCard(digit: _nextDigit!, isTop: true),
+          ] else ...[
+            FlipCard(digit: _previousDigit!, isTop: true),
+          ],
+          Container(
+            margin: EdgeInsets.only(top: height / 2),
+            child: FlipCard(digit: _previousDigit!, isTop: false),
+          ),
 
           // Animated flip cards
-          if (_isFlipping) ...[
+          if (_animationController.isAnimating) ...[
             // Top half flipping down
             AnimatedBuilder(
               animation: _flipAnimation,
+
               builder: (context, child) {
                 if (_flipAnimation.value < 0.5) {
                   return Transform(
-                    alignment: Alignment.bottomCenter,
+                    origin: Offset(0, height / 2),
+
                     transform: Matrix4.identity()
                       ..setEntry(3, 2, 0.001)
-                      ..rotateX(-_flipAnimation.value * math.pi),
+                      ..rotateX((_flipAnimation.value - 0) * math.pi),
                     child: FlipCard(digit: _previousDigit!, isTop: true),
                   );
                 } else {
-                  return Container();
-                }
-              },
-            ),
-
-            // Bottom half flipping up
-            AnimatedBuilder(
-              animation: _flipAnimation,
-              builder: (context, child) {
-                if (_flipAnimation.value >= 0.5) {
-                  return Transform(
-                    alignment: Alignment.topCenter,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateX((_flipAnimation.value - 1) * math.pi),
-                    child: FlipCard(digit: _nextDigit!, isTop: false),
+                  return Container(
+                    margin: EdgeInsets.only(top: height / 2),
+                    child: Transform(
+                      origin: Offset(0, 0),
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateX((_flipAnimation.value - 1) * math.pi),
+                      child: FlipCard(digit: _nextDigit!, isTop: false),
+                    ),
                   );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-
-            // New top half (appears instantly at halfway point)
-            AnimatedBuilder(
-              animation: _flipAnimation,
-              builder: (context, child) {
-                if (_flipAnimation.value >= 0.5) {
-                  return FlipCard(digit: _nextDigit!, isTop: true);
-                } else {
-                  return Container();
                 }
               },
             ),
@@ -302,7 +288,6 @@ class FlipCard extends StatelessWidget {
     return Container(
       width: 120,
       height: height,
-      margin: EdgeInsets.only(top: isTop ? 0 : height),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(4),
@@ -321,7 +306,7 @@ class FlipCard extends StatelessWidget {
               width: 60,
               alignment: Alignment.center,
               transform: Matrix4.identity()
-                ..translate(0.0, (isTop ? height / 2 : -(height / 2))-5),
+                ..translate(0.0, (isTop ? height / 2 : -(height / 2)) - 5),
               child: Text(
                 digit,
                 style: TextStyle(
