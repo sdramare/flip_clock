@@ -23,7 +23,8 @@ A Flutter app with a vintage flip clock on the main screen.
 
 ## Screenshots
 
-<!-- Add screenshots here if available -->
+<img width="1062" height="450" alt="image" src="https://github.com/user-attachments/assets/2407f3a9-92d7-488b-ab2c-9961572514cf" />
+
 
 ---
 
