@@ -19,7 +19,6 @@ A Flutter app with a vintage flip clock on the main screen.
 
 ## How it works
 
-- The main screen displays a flip clock and a counter.
 - The flip clock updates every second.
 
 ## Screenshots
